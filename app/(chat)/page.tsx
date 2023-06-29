@@ -4,6 +4,7 @@ import { faker } from "@faker-js/faker";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
+import * as Separator from "@radix-ui/react-separator";
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
@@ -47,7 +48,7 @@ function Message({ isSelf }: MessageProps) {
 export default function Home() {
   return (
     <div className="w-full h-screen flex flex-col bg-slate-800">
-      <div className="h-16 w-full bg-slate-900 flex gap-4 border-l-2 border-slate-950 items-center p-3">
+      <div className="h-16 w-full bg-slate-900 flex gap-4 items-center p-3">
         <Avatar.Root className="sticky top-0 flex-shrink-0 w-10 h-10 rounded-full overflow-hidden flex items-center justify-center">
           <Avatar.Fallback>Gn</Avatar.Fallback>
           <Avatar.Image className="object-cover" src={faker.image.avatar()} />
@@ -56,6 +57,10 @@ export default function Home() {
           {faker.company.name()}
         </div>
       </div>
+      <Separator.Root
+        orientation="horizontal"
+        className="h-0.5 bg-slate-950 rounded-full"
+      />
       <div className="flex-1 align-bottom w-full overflow-auto flex flex-col gap-10 p-3">
         {faker.helpers
           .multiple(() => faker.helpers.arrayElement([true, false]), {
@@ -65,10 +70,18 @@ export default function Home() {
             return <Message isSelf={isSelf} key={index} />;
           })}
       </div>
-      <div className="h-20 w-full bg-slate-700 flex gap-4">
+      <Separator.Root
+        orientation="horizontal"
+        className="h-0.5 bg-slate-950 rounded-full"
+      />
+      <div className="h-20 w-full bg-slate-700 flex">
         <input
           type="text"
-          className="h-full flex-1 outline-none bg-transparent text-white p-4"
+          className="h-full flex-1 outline-none bg-transparent text-white p-4 w-full"
+        />
+        <Separator.Root
+          orientation="vertical"
+          className="w-0.5 bg-slate-950 rounded-full"
         />
         <button className="text-white h-full bg-slate-600 flex justify-center items-center aspect-square">
           <svg
