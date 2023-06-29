@@ -1,22 +1,26 @@
 "use client";
 
 import { faker } from "@faker-js/faker";
-import * as Avatar from "@radix-ui/react-avatar";
-import * as Separator from "@radix-ui/react-separator";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/lib/components/ui/avatar";
+import { Separator } from "@/lib/components/ui/separator";
 
 function ChatItem() {
   return (
-    <div className="cursor-pointer group room bg-slate-900 flex items-center justify-start p-2 gap-3 hover:bg-slate-800 active:bg-slate-700">
-      <Avatar.Root className="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden flex items-center justify-center">
-        <Avatar.Fallback>Gn</Avatar.Fallback>
-        <Avatar.Image className="object-cover" src={faker.image.avatar()} />
-      </Avatar.Root>
+    <div className="cursor-pointer group room bg-zinc-950 flex items-center justify-start p-2 gap-3 hover:bg-zinc-900 active:bg-zinc-800 transition-colors">
+      <Avatar className="flex-shrink-0 w-12 h-12">
+        <AvatarFallback>Gn</AvatarFallback>
+        <AvatarImage className="object-cover" src={faker.image.avatar()} />
+      </Avatar>
       <div className="flex flex-col overflow-hidden text-ellipsis justify-start gap-1 h-full">
         <div className="truncate text-white font-bold">
           {faker.company.name()}
         </div>
-        <div className="truncate text-xs text-slate-500">
-          <span className="text-slate-200">{faker.person.firstName()}: </span>
+        <div className="truncate text-xs text-zinc-500">
+          <span className="text-zinc-200">{faker.person.firstName()}: </span>
           {faker.lorem.sentences()}
         </div>
       </div>
@@ -32,10 +36,10 @@ export default function ChatLayout({
   faker.seed(24);
   return (
     <div className="flex">
-      <div className="flex flex-col w-80 bg-slate-900 min-h-[100dvh]">
-        <div className="w-full p-4 text-2xl font-bold text-slate-500 bg-slate-900 flex">
+      <div className="flex flex-col w-80 bg-zinc-950 min-h-[100dvh]">
+        <div className="w-full p-4 text-2xl font-bold text-zinc-500 bg-zinc-900 flex">
           Chatter
-          <button className="ml-auto p-1 hover:bg-slate-950 bg-opacity-5 rounded-sm">
+          <button className="ml-auto p-1 hover:bg-zinc-950 bg-opacity-5 rounded-sm">
             <svg
               width="1em"
               height="1em"
@@ -53,40 +57,37 @@ export default function ChatLayout({
           </button>
         </div>
         <div className="flex flex-col">
-          <Separator.Root
+          <Separator orientation="horizontal" className="h-0.5 bg-zinc-950" />
+          <ChatItem />
+          <Separator
             orientation="horizontal"
-            className="h-0.5 bg-slate-950 rounded-full"
+            className="h-[1px] bg-zinc-200 bg-opacity-5"
           />
           <ChatItem />
-          <Separator.Root
+          <Separator
             orientation="horizontal"
-            className="h-[1px] bg-slate-200 rounded-full bg-opacity-5"
+            className="h-[1px] bg-zinc-200 bg-opacity-5"
           />
           <ChatItem />
-          <Separator.Root
+          <Separator
             orientation="horizontal"
-            className="h-[1px] bg-slate-200 rounded-full bg-opacity-5"
+            className="h-[1px] bg-zinc-200 bg-opacity-5"
           />
           <ChatItem />
-          <Separator.Root
+          <Separator
             orientation="horizontal"
-            className="h-[1px] bg-slate-200 rounded-full bg-opacity-5"
+            className="h-[1px] bg-zinc-200 bg-opacity-5"
           />
           <ChatItem />
-          <Separator.Root
+          <Separator
             orientation="horizontal"
-            className="h-[1px] bg-slate-200 rounded-full bg-opacity-5"
-          />
-          <ChatItem />
-          <Separator.Root
-            orientation="horizontal"
-            className="h-[1px] bg-slate-200 rounded-full bg-opacity-5"
+            className="h-[1px] bg-zinc-200 bg-opacity-5"
           />
         </div>
       </div>
-      <Separator.Root
+      <Separator
         orientation="vertical"
-        className="w-0.5 bg-slate-950 rounded-full"
+        className="w-0.5 h-[100dvh] bg-zinc-950"
       />
       {children}
     </div>

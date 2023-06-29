@@ -1,10 +1,14 @@
 "use client";
-import * as Avatar from "@radix-ui/react-avatar";
 import { faker } from "@faker-js/faker";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
-import * as Separator from "@radix-ui/react-separator";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/lib/components/ui/avatar";
+import { Separator } from "@/lib/components/ui/separator";
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
@@ -14,22 +18,22 @@ interface MessageProps {
 function Message({ isSelf }: MessageProps) {
   return (
     <div
-      className="flex max-w-xl data-[is-self=true]:ml-auto data-[is-self=true]:flex-row-reverse gap-2 group"
+      className="flex max-w-xl data-[is-self=true]:ml-auto data-[is-self=true]:flex-row-reverse gap-2 group text-black"
       data-is-self={isSelf}
     >
-      <Avatar.Root className="sticky top-0 flex-shrink-0 w-12 h-12 rounded-full overflow-hidden flex items-center justify-center">
-        <Avatar.Fallback>Gn</Avatar.Fallback>
-        <Avatar.Image className="object-cover" src={faker.image.avatar()} />
-      </Avatar.Root>
+      <Avatar className="sticky top-0 flex-shrink-0 w-12 h-12">
+        <AvatarFallback>Gn</AvatarFallback>
+        <AvatarImage className="object-cover" src={faker.image.avatar()} />
+      </Avatar>
       <div className="flex flex-col gap-1 items-start group-data-[is-self=true]:items-end ">
         {faker.helpers.multiple(faker.lorem.paragraph).map((text, index) => {
           return (
             <div
               key={index}
-              className="bg-white p-2 first-of-type:rounded-t-md rounded-sm last-of-type:rounded-b-md group-data-[is-self=true]:bg-slate-300 flex flex-col"
+              className="bg-white p-2 first-of-type:rounded-t-md rounded-sm last-of-type:rounded-b-md group-data-[is-self=true]:bg-zinc-300 flex flex-col"
             >
               <p>{text}</p>
-              <div className="ml-auto w-fit text-sm text-slate-500">
+              <div className="ml-auto w-fit text-sm text-zinc-500">
                 {dayjs
                   .duration(
                     faker.number.int({ min: 1, max: 10 }),
@@ -47,19 +51,19 @@ function Message({ isSelf }: MessageProps) {
 
 export default function Home() {
   return (
-    <div className="w-full h-screen flex flex-col bg-slate-800">
-      <div className="h-16 w-full bg-slate-900 flex gap-4 items-center p-3">
-        <Avatar.Root className="sticky top-0 flex-shrink-0 w-10 h-10 rounded-full overflow-hidden flex items-center justify-center">
-          <Avatar.Fallback>Gn</Avatar.Fallback>
-          <Avatar.Image className="object-cover" src={faker.image.avatar()} />
-        </Avatar.Root>
+    <div className="w-full h-screen flex flex-col bg-zinc-900">
+      <div className="h-16 w-full bg-zinc-900 flex gap-4 items-center p-3">
+        <Avatar className="sticky top-0 flex-shrink-0 w-10 h-10">
+          <AvatarFallback>Gn</AvatarFallback>
+          <AvatarImage className="object-cover" src={faker.image.avatar()} />
+        </Avatar>
         <div className="truncate text-white font-bold text-xl">
           {faker.company.name()}
         </div>
       </div>
-      <Separator.Root
+      <Separator
         orientation="horizontal"
-        className="h-0.5 bg-slate-950 rounded-full"
+        className="h-0.5 bg-zinc-950 rounded-full"
       />
       <div className="flex-1 align-bottom w-full overflow-auto flex flex-col gap-10 p-3">
         {faker.helpers
@@ -70,20 +74,20 @@ export default function Home() {
             return <Message isSelf={isSelf} key={index} />;
           })}
       </div>
-      <Separator.Root
+      <Separator
         orientation="horizontal"
-        className="h-0.5 bg-slate-950 rounded-full"
+        className="h-0.5 bg-zinc-950 rounded-full"
       />
-      <div className="h-20 w-full bg-slate-700 flex">
+      <div className="h-20 w-full bg-zinc-800 flex">
         <input
           type="text"
           className="h-full flex-1 outline-none bg-transparent text-white p-4 w-full"
         />
-        <Separator.Root
+        <Separator
           orientation="vertical"
-          className="w-0.5 bg-slate-950 rounded-full"
+          className="w-0.5 bg-zinc-950 rounded-full"
         />
-        <button className="text-white h-full bg-slate-600 flex justify-center items-center aspect-square">
+        <button className="text-white h-full bg-zinc-600 flex justify-center items-center aspect-square">
           <svg
             width="15"
             height="15"

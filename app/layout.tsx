@@ -1,3 +1,4 @@
+"use client";
 import "./globals.css";
 
 export default function RootLayout({
@@ -7,7 +8,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="dark">{children}</body>
     </html>
   );
 }
