@@ -29,32 +29,37 @@ dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
 interface MessageProps {
-  messageInfo: DeepReadonly<Message>;
+  messageInfo: Array<DeepReadonly<Message>>;
 }
-function Message({ messageInfo: { value, from } }: MessageProps) {
+function Message({ messageInfo }: MessageProps) {
   const userSnaphsot = useSnapshot(userState);
+  const [{ value, from, date }] = messageInfo;
   const isSelf = from.id === userSnaphsot.id;
   return (
     <div
-      className="flex max-w-xl data-[is-self=true]:ml-auto data-[is-self=true]:flex-row-reverse gap-2 group text-black"
+      className="flex max-w-xl data-[is-self=true]:ml-auto data-[is-self=true]:flex-row-reverse gap-2 group"
       data-is-self={isSelf}
     >
       <Avatar className="sticky top-0 flex-shrink-0 w-12 h-12">
-        <AvatarFallback>Gn</AvatarFallback>
+        <AvatarFallback className="uppercase text-foreground">
+          {from.name.slice(0, 2)}
+        </AvatarFallback>
         <AvatarImage className="object-cover" src={faker.image.avatar()} />
       </Avatar>
-      <div className="flex flex-col gap-1 items-start group-data-[is-self=true]:items-end ">
-        <div className="bg-white p-2 first-of-type:rounded-t-md rounded-sm last-of-type:rounded-b-md group-data-[is-self=true]:bg-zinc-300 flex flex-col">
-          <p>{value}</p>
-          <div className="ml-auto w-fit text-sm text-zinc-500">
-            {dayjs
-              .duration(
-                faker.number.int({ min: 1, max: 10 }),
-                faker.helpers.arrayElement(["seconds", "minutes", "hours"])
-              )
-              .humanize()}
-          </div>
-        </div>
+      <div className="flex flex-col gap-1 items-start group-data-[is-self=true]:items-end">
+        {messageInfo.map(({ value, date }, index) => {
+          return (
+            <div
+              key={value + index}
+              className="p-2 first-of-type:rounded-t-md rounded-sm last-of-type:rounded-b-md group-data-[is-self=true]:bg-primary group-data-[is-self=true]:text-primary-foreground bg-secondary flex flex-col text-secondary-foreground"
+            >
+              <p>{value}</p>
+              <div className="ml-auto w-fit text-sm text-muted-foreground">
+                {dayjs(date).fromNow(true)}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -80,10 +85,20 @@ export default function Chatroom({ params: { chatroomId } }: ChatroomProps) {
   });
   if (!socketSnapshot.socket.current) return;
   if (!chatroom) return router.replace("/");
+  let messages: Array<Array<Message>> = [];
+  let lastMessage: Message | undefined;
+  for (let targetMessage of chatroom.messages) {
+    if (lastMessage?.from.id === targetMessage.from.id) {
+      messages.at(-1)?.unshift(targetMessage);
+    } else {
+      messages.push([targetMessage]);
+    }
+    lastMessage = targetMessage;
+  }
   socketState.socket.current.emit("chatroom/join", { id: chatroomId });
   return (
-    <div className="w-full h-screen flex flex-col bg-zinc-900">
-      <div className="h-16 w-full bg-zinc-900 flex gap-4 items-center p-3">
+    <div className="w-full h-screen flex flex-col bg-primary-foreground">
+      <div className="h-16 w-full bg-primary-foreground flex gap-4 items-center p-3">
         <Avatar className="sticky top-0 flex-shrink-0 w-10 h-10">
           <AvatarFallback>Gn</AvatarFallback>
           <AvatarImage className="object-cover" src={faker.image.avatar()} />
@@ -94,7 +109,7 @@ export default function Chatroom({ params: { chatroomId } }: ChatroomProps) {
       </div>
       <Separator orientation="horizontal" />
       <div className="flex-1 align-bottom w-full overflow-auto flex flex-col-reverse gap-10 p-3 mt-auto">
-        {chatroom.messages.map((message, index) => {
+        {messages.map((message, index) => {
           return <Message messageInfo={message} key={index} />;
         })}
       </div>

@@ -10,8 +10,6 @@ import { useEffect } from "react";
 import { SOCKET_CONFIG } from "@/lib/constants";
 import { io } from "socket.io-client";
 import { Chatroom } from "@schemas/chat/chatroom.schema";
-import { z } from "zod";
-import { getMessagesSchema } from "@schemas/chat";
 import { Message } from "@schemas/chat/message.schema";
 
 export default function RootLayout({

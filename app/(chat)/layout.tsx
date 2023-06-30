@@ -10,7 +10,6 @@ import { Separator } from "@/lib/components/ui/separator";
 import { Button } from "@/lib/components/ui/button";
 import { useSnapshot } from "valtio";
 import { chatroomsState } from "@/lib/stores/socket.store";
-import { Message } from "@schemas/chat/message.schema";
 import { Fragment } from "react";
 import { Chatroom } from "@schemas/chat/chatroom.schema";
 import { DeepReadonly } from "@/lib/types/helpers/deep-readonly";
@@ -23,16 +22,18 @@ function ChatItem({ roomInfo: { id, messages, name } }: ChatItemProps) {
   const lastMessage = messages[0];
   return (
     <Link href={id}>
-      <div className="cursor-pointer group room bg-zinc-900 flex items-center justify-start p-2 gap-3 hover:bg-zinc-800 active:bg-zinc-950 transition-colors duration-150">
+      <div className="cursor-pointer group room bg-primary-foreground flex items-center justify-start p-2 gap-3 hover:bg-accent transition-colors duration-150">
         <Avatar className="flex-shrink-0 w-12 h-12">
           <AvatarFallback>Gn</AvatarFallback>
           <AvatarImage className="object-cover" src={faker.image.avatar()} />
         </Avatar>
         <div className="flex flex-col overflow-hidden text-ellipsis justify-start gap-1 h-full">
-          <div className="truncate text-white font-bold">{name}</div>
+          <div className="truncate text-primary font-bold">{name}</div>
           {lastMessage && (
-            <div className="truncate text-xs text-zinc-500">
-              <span className="text-zinc-200">{lastMessage.from.name}: </span>
+            <div className="truncate text-xs text-secondary-foreground">
+              <span className="text-muted-foreground">
+                {lastMessage.from.name}:{" "}
+              </span>
               {lastMessage.value}
             </div>
           )}
@@ -51,8 +52,8 @@ export default function ChatLayout({
   const chatroomsSnapshot = useSnapshot(chatroomsState);
   return (
     <div className="flex">
-      <div className="flex flex-col w-80 bg-zinc-900 min-h-[100dvh]">
-        <div className="w-full text-2xl font-bold text-zinc-500 bg-zinc-900 flex">
+      <div className="flex flex-col w-80 bg-primary-foreground min-h-[100dvh]">
+        <div className="w-full text-2xl font-bold text-primary bg-primary-foreground flex">
           <div className="p-4">Chatter</div>
           <Separator orientation="vertical" className="ml-auto" />
           <Button
