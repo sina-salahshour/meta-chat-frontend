@@ -10,6 +10,7 @@ import {
 } from "@/lib/components/ui/avatar";
 import { Separator } from "@/lib/components/ui/separator";
 import { Button } from "@/lib/components/ui/button";
+import { Input } from "@/lib/components/ui/input";
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
@@ -62,7 +63,7 @@ export default function Home() {
           {faker.company.name()}
         </div>
       </div>
-      <Separator orientation="horizontal" className="bg-zinc-950" />
+      <Separator orientation="horizontal" />
       <div className="flex-1 align-bottom w-full overflow-auto flex flex-col gap-10 p-3">
         {faker.helpers
           .multiple(() => faker.helpers.arrayElement([true, false]), {
@@ -72,14 +73,11 @@ export default function Home() {
             return <Message isSelf={isSelf} key={index} />;
           })}
       </div>
-      <Separator orientation="horizontal" className="bg-zinc-950" />
-      <div className="h-20 w-full bg-zinc-800 flex">
-        <input
-          type="text"
-          className="h-full flex-1 outline-none bg-transparent text-white p-4 w-full"
-        />
-        <Separator orientation="vertical" className="bg-zinc-950" />
-        <Button variant="outline" className="h-full aspect-square rounded-none">
+      <Separator orientation="horizontal" />
+      <div className="h-20 w-full flex">
+        <Input type="text" className="h-full rounded-none p-5 border-none" />
+        <Separator orientation="vertical" />
+        <Button className="h-full aspect-square rounded-none">
           <svg
             width="15"
             height="15"
