@@ -8,24 +8,37 @@ import {
 } from "@/lib/components/ui/avatar";
 import { Separator } from "@/lib/components/ui/separator";
 import { Button } from "@/lib/components/ui/button";
+import { useSnapshot } from "valtio";
+import { chatroomsState } from "@/lib/stores/socket.store";
+import { Message } from "@schemas/chat/message.schema";
+import { Fragment } from "react";
+import { Chatroom } from "@schemas/chat/chatroom.schema";
+import { DeepReadonly } from "@/lib/types/helpers/deep-readonly";
+import Link from "next/link";
 
-function ChatItem() {
+interface ChatItemProps {
+  roomInfo: DeepReadonly<Chatroom>;
+}
+function ChatItem({ roomInfo: { id, messages, name } }: ChatItemProps) {
+  const lastMessage = messages[0];
   return (
-    <div className="cursor-pointer group room bg-zinc-900 flex items-center justify-start p-2 gap-3 hover:bg-zinc-800 active:bg-zinc-950 transition-colors duration-150">
-      <Avatar className="flex-shrink-0 w-12 h-12">
-        <AvatarFallback>Gn</AvatarFallback>
-        <AvatarImage className="object-cover" src={faker.image.avatar()} />
-      </Avatar>
-      <div className="flex flex-col overflow-hidden text-ellipsis justify-start gap-1 h-full">
-        <div className="truncate text-white font-bold">
-          {faker.company.name()}
-        </div>
-        <div className="truncate text-xs text-zinc-500">
-          <span className="text-zinc-200">{faker.person.firstName()}: </span>
-          {faker.lorem.sentences()}
+    <Link href={id}>
+      <div className="cursor-pointer group room bg-zinc-900 flex items-center justify-start p-2 gap-3 hover:bg-zinc-800 active:bg-zinc-950 transition-colors duration-150">
+        <Avatar className="flex-shrink-0 w-12 h-12">
+          <AvatarFallback>Gn</AvatarFallback>
+          <AvatarImage className="object-cover" src={faker.image.avatar()} />
+        </Avatar>
+        <div className="flex flex-col overflow-hidden text-ellipsis justify-start gap-1 h-full">
+          <div className="truncate text-white font-bold">{name}</div>
+          {lastMessage && (
+            <div className="truncate text-xs text-zinc-500">
+              <span className="text-zinc-200">{lastMessage.from.name}: </span>
+              {lastMessage.value}
+            </div>
+          )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -35,6 +48,8 @@ export default function ChatLayout({
   children: React.ReactNode;
 }) {
   faker.seed(24);
+  const chatroomsSnapshot = useSnapshot(chatroomsState);
+  console.log(JSON.stringify(chatroomsSnapshot.chatrooms));
   return (
     <div className="flex">
       <div className="flex flex-col w-80 bg-zinc-900 min-h-[100dvh]">
@@ -62,19 +77,14 @@ export default function ChatLayout({
           </Button>
         </div>
         <div className="flex flex-col">
-          <Separator />
-          <ChatItem />
-          <Separator />
-          <ChatItem />
-          <Separator
-            orientation="horizontal"
-            className="bg-zinc-200 bg-opacity-5"
-          />
-          <ChatItem />
-          <Separator />
-          <ChatItem />
-          <Separator />
-          <ChatItem />
+          {chatroomsSnapshot.chatrooms.map((chatroom) => {
+            return (
+              <Fragment key={chatroom.id}>
+                <Separator />
+                <ChatItem roomInfo={chatroom} />
+              </Fragment>
+            );
+          })}
           <Separator />
         </div>
       </div>
