@@ -49,7 +49,6 @@ export default function ChatLayout({
 }) {
   faker.seed(24);
   const chatroomsSnapshot = useSnapshot(chatroomsState);
-  console.log(JSON.stringify(chatroomsSnapshot.chatrooms));
   return (
     <div className="flex">
       <div className="flex flex-col w-80 bg-zinc-900 min-h-[100dvh]">
