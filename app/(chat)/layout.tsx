@@ -7,6 +7,7 @@ import {
   AvatarImage,
 } from "@/lib/components/ui/avatar";
 import { Separator } from "@/lib/components/ui/separator";
+import { Button } from "@/lib/components/ui/button";
 
 function ChatItem() {
   return (
@@ -37,9 +38,13 @@ export default function ChatLayout({
   return (
     <div className="flex">
       <div className="flex flex-col w-80 bg-zinc-950 min-h-[100dvh]">
-        <div className="w-full p-4 text-2xl font-bold text-zinc-500 bg-zinc-900 flex">
-          Chatter
-          <button className="ml-auto p-1 hover:bg-zinc-950 bg-opacity-5 rounded-sm">
+        <div className="w-full text-2xl font-bold text-zinc-500 bg-zinc-900 flex">
+          <div className="p-4">Chatter</div>
+          <Separator orientation="vertical" className="ml-auto bg-zinc-950" />
+          <Button
+            variant="ghost"
+            className="h-full aspect-square text-xl rounded-none"
+          >
             <svg
               width="1em"
               height="1em"
@@ -54,41 +59,38 @@ export default function ChatLayout({
                 clipRule="evenodd"
               ></path>
             </svg>
-          </button>
+          </Button>
         </div>
         <div className="flex flex-col">
-          <Separator orientation="horizontal" className="h-0.5 bg-zinc-950" />
+          <Separator orientation="horizontal" className="bg-zinc-950" />
           <ChatItem />
           <Separator
             orientation="horizontal"
-            className="h-[1px] bg-zinc-200 bg-opacity-5"
+            className="bg-zinc-200 bg-opacity-5"
           />
           <ChatItem />
           <Separator
             orientation="horizontal"
-            className="h-[1px] bg-zinc-200 bg-opacity-5"
+            className="bg-zinc-200 bg-opacity-5"
           />
           <ChatItem />
           <Separator
             orientation="horizontal"
-            className="h-[1px] bg-zinc-200 bg-opacity-5"
+            className="bg-zinc-200 bg-opacity-5"
           />
           <ChatItem />
           <Separator
             orientation="horizontal"
-            className="h-[1px] bg-zinc-200 bg-opacity-5"
+            className="bg-zinc-200 bg-opacity-5"
           />
           <ChatItem />
           <Separator
             orientation="horizontal"
-            className="h-[1px] bg-zinc-200 bg-opacity-5"
+            className="bg-zinc-200 bg-opacity-5"
           />
         </div>
       </div>
-      <Separator
-        orientation="vertical"
-        className="w-0.5 h-[100dvh] bg-zinc-950"
-      />
+      <Separator orientation="vertical" className="bg-zinc-950" />
       {children}
     </div>
   );
